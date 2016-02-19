@@ -11,7 +11,8 @@ import time
 myNic = "eth0"
 #domain_name = "bbc.co.uk"
 #domain_name = "dsv.su.se"
-domain_name = "google.com"
+#domain_name = "google.com"
+domain_name = "cataclysma.ml"
 domain_url = "http://" + domain_name
 my_oFile = domain_name + "-" +datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
 my_filePath = '/pcaps/' + domain_name + '/' +my_oFile
