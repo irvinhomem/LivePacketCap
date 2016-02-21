@@ -15,7 +15,7 @@ myNic = "eth0"
 #domain_name = "dsv.su.se"
 #domain_name = "google.com"
 #domain_name = "cataclysma.ml"
-#domain_name = "baidu.com"
+domain_name = "baidu.com"
 #domain_name = "craigslist.org"
 #domain_name = "weibo.com"
 domain_url = "http://" + domain_name
@@ -24,6 +24,7 @@ my_filePath = '/tmp/pcaps/' + domain_name + '/'
 wget_params = "-H -p -nv -e robots=off --no-dns-cache --delete-after http://" + domain_name
 #wget_cmd_params = ['wget','-H','-p', '-nv', '-q', '--show-progress', '-e', 'robots=off', '--no-dns-cache', '--delete-after', domain_url]
 wget_cmd_params = ['wget', '-H', '-p', '-nv', '-e', 'robots=off', '--no-dns-cache', '--delete-after', domain_url]
+google_chrome_params = ['google-chrome','--incognito', domain_url]
 
 print("Sniffing Interface : ", myNic)
 print("Current Domain : ", domain_name)
@@ -47,30 +48,35 @@ make_sure_path_exists(my_filePath)
 # Setup capture
 cap = pyshark.LiveCapture(interface=myNic, output_file=my_filePath+my_oFile)
 successful = -1
+#successful = multiprocessing.Queue
 
-def run_Capture():
+def run_capture():
     print("Starting Capture ...")
     cap.sniff()
 
-def run_Wget():
+def run_wget():
     print("Starting wget ...")
-    success = subprocess.call(wget_cmd_params)
+    success = subprocess.call(wget_cmd_params, timeout=20)
+    #success = subprocess.call(google_chrome_params, timeout=20)
     print("Success = ", success)
     print("Finished wget ...")
     return success
 
-p = multiprocessing.Process(target=run_Capture)
-p.start()
+procCapture = multiprocessing.Process(target=run_capture)
+procCapture.start()
 
 #Give it 5 seconds to set up the capture interface
-time.sleep(5)
+time.sleep(3)
 
-successful = run_Wget()
+successful = run_wget()
+#procWebRequest = multiprocessing.Process(target=run_wget, args=(successful))
+#procWebRequest.start()
+#procWebRequest.
 
 if successful == 8:
     cap.close()
     print("Closed sniffer.")
-    p.terminate()
+    procCapture.terminate()
 
 
 print("... Ended Capture.")
