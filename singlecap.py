@@ -6,15 +6,8 @@ import multiprocessing
 import time
 import os
 import errno
-import csv
 #import threading
 #subprocess.run python 3.5
-
-theCsvFilePath = 'top-5.csv'
-
-def read_csv_file(csv_filepath):
-    with open(csv_filepath, mode='r', newline='') as csvfile:
-        domain_name_rdr = csv.reader(csvfile, delimiter='', quotechar='|')
 
 myNic = "eth0"
 #domain_name = "bbc.co.uk"
@@ -24,6 +17,8 @@ myNic = "eth0"
 domain_name = "baidu.com"
 #domain_name = "craigslist.org"
 #domain_name = "weibo.com"
+
+
 domain_url = "http://" + domain_name
 my_oFile = domain_name + "-" +datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
 my_filePath = '/tmp/pcaps/' + domain_name + '/'
