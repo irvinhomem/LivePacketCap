@@ -6,9 +6,15 @@ import multiprocessing
 import time
 import os
 import errno
+import csv
 #import threading
 #subprocess.run python 3.5
 
+theCsvFilePath = 'top-5.csv'
+
+def read_csv_file(csv_filepath):
+    with open(csv_filepath, mode='r', newline='') as csvfile:
+        domain_name_rdr = csv.reader(csvfile, delimiter='', quotechar='|')
 
 myNic = "eth0"
 #domain_name = "bbc.co.uk"
