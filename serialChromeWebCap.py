@@ -52,15 +52,14 @@ class SerialChromeWebCap(object):
     def run_capture(self, myCap):
         self.logger.debug("Starting Capture (Inside Capture function)...")
         myCap.sniff()
+        self.logger.info("Capture Process ID: %i" % procCapture.pid)
 
     #def run_wget(success):
     def run_chrome_browser(self, web_req_params):
-        print("Starting wget ...")
-        #web_process = subprocess.Popen(wget_cmd_params)
-        #web_process = subprocess.Popen(google_chrome_params)
+        self.logger.debug("Starting wget ...")
         web_process = subprocess.Popen(web_req_params)
 
-        print("Process ID: ", web_process.pid)
+        self.logger.debug("Process ID: %i" % web_process.pid)
         try:
             streamdata = web_process.communicate(timeout=20)[0]
 
@@ -122,7 +121,6 @@ class SerialChromeWebCap(object):
         self.logger.info("Starting Capture Process ...")
         #cap.sniff()
         procCapture = mp.Process(target=self.run_capture, args=self.cap)
-        #procCapture = mp.Process(target=cap.sniff)
         procCapture.start()
 
         self.logger.debug("Capture started...")
