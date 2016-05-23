@@ -52,7 +52,7 @@ class SerialChromeWebCap(object):
     def run_capture(self, myCap):
         self.logger.debug("Starting Capture (Inside Capture function)...")
         myCap.sniff()
-        self.logger.info("Capture Process ID: %i" % procCapture.pid)
+
 
     #def run_wget(success):
     def run_chrome_browser(self, web_req_params):
@@ -117,11 +117,14 @@ class SerialChromeWebCap(object):
 
         # Setup capture
         self.cap = pyshark.LiveCapture(interface=self.myNic, output_file=my_filePath+my_oFile)
+        self.logger.debug("Pyshark LiveCapture Object type: %s" % type(self.cap))
 
         self.logger.info("Starting Capture Process ...")
         #cap.sniff()
         procCapture = mp.Process(target=self.run_capture, args=self.cap)
         procCapture.start()
+        self.logger.info("Capture Process is running: %s" % procCapture.is_alive())
+        self.logger.info("Capture Process ID: %i" % procCapture.pid)
 
         self.logger.debug("Capture started...")
         #Give it 5 seconds to set up the capture interface
