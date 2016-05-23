@@ -49,9 +49,11 @@ class SerialChromeWebCap(object):
             if exception.errno != errno.EEXIST:
                 raise
 
-    def run_capture(self, myCap):
+    def run_capture(self):
         self.logger.debug("Starting Capture (Inside Capture function)...")
-        myCap.sniff()
+        name = mp.current_process().name
+        print("%s Starting" % name)
+        self.cap.sniff()
 
 
     #def run_wget(success):
@@ -121,7 +123,7 @@ class SerialChromeWebCap(object):
 
         self.logger.info("Starting Capture Process ...")
         #cap.sniff()
-        procCapture = mp.Process(target=self.run_capture, args=self.cap)
+        procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.run_capture)
         procCapture.start()
         self.logger.info("Capture Process is running: %s" % procCapture.is_alive())
         self.logger.info("Capture Process ID: %i" % procCapture.pid)
