@@ -27,7 +27,7 @@ class SerialChromeWebCap(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        self.theCsvFilePath = 'top-5.csv'
+        self.theCsvFilePath = 'top-2.csv'
         self.myNic = "eth0"
         self.cap = None
         self.procCapture = None
@@ -50,15 +50,20 @@ class SerialChromeWebCap(object):
                 raise
 
     def run_capture(self):
+        self.logger.debug("###########################################################")
         self.logger.debug("Starting Capture (Inside Capture function)...")
+        self.logger.debug("###########################################################")
         name = mp.current_process().name
         print("%s Starting" % name)
         self.cap.sniff()
 
-
     #def run_wget(success):
     def run_chrome_browser(self, web_req_params):
+        self.logger.debug("############################################################")
         self.logger.debug("Starting wget ...")
+        self.logger.debug("###########################################################")
+        name = mp.current_process().name
+        print("%s Starting" % name)
         web_process = subprocess.Popen(web_req_params)
 
         self.logger.debug("Process ID: %i" % web_process.pid)
@@ -131,8 +136,9 @@ class SerialChromeWebCap(object):
         self.logger.debug("Capture started...")
         #Give it 5 seconds to set up the capture interface
         time.sleep(3)
-
-        procWebRequest = mp.Process(target=self.run_chrome_browser, args=google_chrome_params)
+        my_args = [self, google_chrome_params]
+        procWebRequest = mp.Process(name='Chrome Browser process/ service',
+                                    target=self.run_chrome_browser, args=my_args)
         procWebRequest.start()
 
 if __name__ == "__main__":
