@@ -54,28 +54,28 @@ class SerialChromeWebCap(object):
         self.logger.debug("Starting Capture (Inside Capture function)...")
         self.logger.debug("###########################################################")
         name = mp.current_process().name
-        print("%s Starting" % name)
+        self.logger.info("%s Starting" % name)
         self.cap.sniff()
 
     #def run_wget(success):
     def run_chrome_browser(self, web_req_params):
         self.logger.debug("############################################################")
-        self.logger.debug("Starting wget ...")
+        self.logger.debug("Starting Chrome ...")
         self.logger.debug("###########################################################")
         name = mp.current_process().name
-        print("%s Starting" % name)
+        self.logger.debug("%s Starting" % name)
         web_process = subprocess.Popen(web_req_params)
 
-        self.logger.debug("Process ID: %i" % web_process.pid)
+        self.logger.info("Chrome Process ID: %i [%s]" % (web_process.pid, web_req_params[2]))
         try:
             streamdata = web_process.communicate(timeout=20)[0]
 
             #rc = web_process.returncode
             print("Success / Return code = ", web_process.returncode)
-            print("Finished wget ...")
+            print("Finished Chrome load page ...")
 
         except subprocess.TimeoutExpired:
-            print("Caught Timeout Error : Killing process Pid: ", web_process.pid)
+            print("Caught Timeout Error : Killing process Pid: %i [%s]" % (web_process.pid, web_req_params[2]))
             web_process.terminate()
         finally:
             if web_process.returncode == 8:
@@ -94,7 +94,7 @@ class SerialChromeWebCap(object):
                 print("... Ended Capture.")
             else:
                 #time.sleep(20)
-                print("Past 20s timeout... Killing process ID: ", web_process.pid)
+                print("Past 20s timeout... Killing process ID: %i [%s]" % (web_process.pid, web_req_params[2]))
                 web_process.terminate()
 
                 self.cap.close()
@@ -126,20 +126,20 @@ class SerialChromeWebCap(object):
         self.cap = pyshark.LiveCapture(interface=self.myNic, output_file=my_filePath+my_oFile)
         self.logger.debug("Pyshark LiveCapture Object type: %s" % type(self.cap))
 
-        self.logger.info("Starting Capture Process ...")
+        self.logger.info("Ready to Start Capture Process ...")
         #cap.sniff()
-        procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.run_capture)
-        procCapture.start()
-        self.logger.info("Capture Process is running: %s" % procCapture.is_alive())
-        self.logger.info("Capture Process ID: %i" % procCapture.pid)
+        self.procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.run_capture)
+        self.procCapture.start()
+        self.logger.info("Capture Process is running: %s" % self.procCapture.is_alive())
+        self.logger.info("Capture Process ID: %i" % self.procCapture.pid)
 
         self.logger.debug("Capture started...")
         #Give it 5 seconds to set up the capture interface
         time.sleep(3)
-        my_args = [self, google_chrome_params]
-        procWebRequest = mp.Process(name='Chrome Browser process/ service',
+        my_args = [google_chrome_params,]
+        self.procWebRequest = mp.Process(name='Chrome Browser process/ service',
                                     target=self.run_chrome_browser, args=my_args)
-        procWebRequest.start()
+        self.procWebRequest.start()
 
 if __name__ == "__main__":
     serial_web_cap = SerialChromeWebCap()
