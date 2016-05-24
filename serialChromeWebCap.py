@@ -69,6 +69,7 @@ class SerialChromeWebCap(object):
         web_process = subprocess.Popen(web_req_params)
 
         self.logger.info("Chrome Process ID: %i [%s]" % (web_process.pid, web_req_params[2]))
+        self.logger.info("PyShark LiveCap Type: %s" % type(self.cap))
         try:
             streamdata = web_process.communicate(timeout=20)[0]
 
