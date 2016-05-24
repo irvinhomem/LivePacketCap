@@ -90,12 +90,16 @@ class multiSerialChromeWebCap(object):
         # Setup capture
         self.cap = pyshark.LiveCapture(interface=self.myNic, output_file=my_filePath+my_oFile)
         self.logger.debug("Pyshark LiveCapture Object type: %s" % type(self.cap))
-        self.cap.sniff()
+        #self.cap.sniff()
 
     def run_Single_Capture_Multi_Domain(self):
+        #Set up Capture Sniffing file/process
+        self.run_Capture_Single_File()
         self.logger.info("Ready to Start Capture Process ...")
         # cap.sniff()
-        self.procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.run_Capture_Single_File)
+        #self.procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.run_Capture_Single_File)
+        # Get the Sniffing process ready and START it
+        self.procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.cap.sniff)
         self.procCapture.start()
         self.logger.info("Capture Process is running: %s" % self.procCapture.is_alive())
         self.logger.info("Capture Process ID: %i" % self.procCapture.pid)
@@ -113,6 +117,12 @@ class multiSerialChromeWebCap(object):
             self.procWebRequest.join()
 
         #self.procCapture.join()
+
+    def closeSniffer(self):
+        self.cap.close()
+        print("Closed sniffer.")
+        self.procCapture.terminate()
+        print("... Ended Capture.")
 
     def run_chrome_browser(self, web_req_params):
         self.logger.debug("############################################################")
@@ -138,28 +148,28 @@ class multiSerialChromeWebCap(object):
         finally:
             if web_process.returncode == 8:
                 print("Finished HAPPILY.")
-                self.cap.close()
-                print("Closed sniffer.")
-                self.procCapture.terminate()
-                print("... Ended Capture.")
+                # self.cap.close()
+                # print("Closed sniffer.")
+                # self.procCapture.terminate()
+                # print("... Ended Capture.")
             elif web_process.returncode == 0:
                 web_process.wait(timeout=30)
                 print("Waited 30 secs for timeout...")
 
-                self.cap.close()
-                print("Closed sniffer.")
-                self.procCapture.terminate()
-                print("... Ended Capture.")
+                # self.cap.close()
+                # print("Closed sniffer.")
+                # self.procCapture.terminate()
+                # print("... Ended Capture.")
             else:
                 #time.sleep(20)
                 #self.logger.debug("Web Capture termination ReturnCode: %i " % web_process.returncode)
                 print("Past 20s timeout... Killing process ID: %i [%s]" % (web_process.pid, web_req_params[2]))
                 web_process.terminate()
 
-                self.cap.close()
-                print("Closed sniffer.")
-                self.procCapture.terminate()
-                print("... Ended Capture.")
+                # self.cap.close()
+                # print("Closed sniffer.")
+                # self.procCapture.terminate()
+                # print("... Ended Capture.")
 
     def run_cap_n_chrome(self, domain_name):
         #domain_name = "weibo.com"
@@ -211,6 +221,8 @@ if __name__ == "__main__":
     #     serial_web_cap.run_cap_n_chrome(list_item)
 
     multi_serial_web_cap.run_Single_Capture_Multi_Domain()
+
+    multi_serial_web_cap.closeSniffer()
 
 
 
