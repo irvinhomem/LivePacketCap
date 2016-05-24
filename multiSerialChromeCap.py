@@ -7,6 +7,7 @@ import time
 import os
 import errno
 import csv
+import random
 #import threading
 #subprocess.run #python 3.5
 
@@ -27,12 +28,13 @@ class multiSerialChromeWebCap(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        self.theCsvFilePath = 'top-2.csv'
+        self.theCsvFilePath = 'top-5.csv'
         self.myNic = "eth0"
         self.cap = None
         self.procCapture = None
         self.web_process = None
         self.domain_name_list = []
+        self.all_domains = []
         self.google_chrome_params = []
 
     def read_csv_file(self):
@@ -40,7 +42,7 @@ class multiSerialChromeWebCap(object):
         with open(csv_filepath, mode='r', newline='') as csvfile:
             domain_name_rdr = csv.reader(csvfile, delimiter=',')
             for row in domain_name_rdr:
-                self.domain_name_list.append(row[1])
+                self.all_domains.append(row[1])
 
     def make_sure_path_exists(self, path):
         try:
@@ -59,9 +61,17 @@ class multiSerialChromeWebCap(object):
 
         self.cap.sniff()
 
+    def get_5_random_domains(self):
+        self.domain_name_list = random.sample(self.all_domains, 3)
+
     def createFileName(self):
+        self.get_5_random_domains()
         domain_list = self.domain_name_list
-        three_char_prefix = 'goo-fac'
+
+        file_prefix = ""
+        for domain in domain_list:
+            file_prefix = file_prefix + domain[0:3] + "-"
+        three_char_prefix = file_prefix.strip("-")
         return three_char_prefix
 
     def run_Capture_Single_File(self):
