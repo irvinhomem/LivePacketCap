@@ -34,6 +34,7 @@ class SerialChromeWebCap(object):
         self.procCapture = None
         self.web_process = None
         self.domain_name_list = []
+        self.google_chrome_params = []
 
     def read_csv_file(self):
         csv_filepath = self.theCsvFilePath
@@ -110,13 +111,13 @@ class SerialChromeWebCap(object):
         my_filePath = '/home/irvin/pcaps/' + domain_name + '/'
 
         #google_chrome_params = []
-        google_chrome_params = ['google-chrome','--incognito', domain_url]
+        self.google_chrome_params = ['google-chrome','--incognito', domain_url]
 
         self.logger.info("Sniffing Interface : %s" % self.myNic)
         self.logger.info("Current Domain : %s" % domain_name)
         self.logger.info("Output File name : %s" % my_oFile)
         self.logger.debug("File with Path : %s" % (my_filePath + my_oFile))
-        self.logger.debug("Chrome Command Parameters: %s" % google_chrome_params)
+        self.logger.debug("Chrome Command Parameters: %s" % self.google_chrome_params)
 
         # tshark -w (write output file) and pyshark output_file don't create directories
         # tshark -w (write output file) and pyshark output_file need an absolute file path (they don't seem to recognize relative file paths)
@@ -137,7 +138,7 @@ class SerialChromeWebCap(object):
         self.logger.debug("Capture started...")
         #Give it 5 seconds to set up the capture interface
         time.sleep(3)
-        my_args = [google_chrome_params,]
+        my_args = [self.google_chrome_params,]
         self.procWebRequest = mp.Process(name='Chrome Browser process/ service',
                                     target=self.run_chrome_browser, args=my_args)
         self.procWebRequest.start()
