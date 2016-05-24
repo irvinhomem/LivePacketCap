@@ -12,11 +12,10 @@ import csv
 
 import logging
 
-#####################################################################
-#   Somewhat works, but creates 2 capture files per domain          #
-#   TODO: Fix bug related to creating 2 capture files per domain    #
-#   TODO: Create ONE Capture file (pcap) per domain                 #
-#####################################################################
+###################################################################
+#   Not yet wprking                                               #
+#   TODO: Enable looping through list of domains from CSV file    #
+###################################################################
 
 class SerialChromeWebCap(object):
 
