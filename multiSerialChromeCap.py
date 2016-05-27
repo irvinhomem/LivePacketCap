@@ -62,7 +62,7 @@ class multiSerialChromeWebCap(object):
         self.cap.sniff()
 
     def get_5_random_domains(self):
-        self.domain_name_list = random.sample(self.all_domains, 3)
+        self.domain_name_list = random.sample(self.all_domains, 5)
 
     def createFileName(self):
         self.get_5_random_domains()
