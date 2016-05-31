@@ -8,15 +8,15 @@ def seperate_Http_Https():
 
     with open(csv_input_file, mode='r', newline='') as csv_input_file:
         row_content_rdr = csv.reader(csv_input_file, delimiter=',')
-        for single_row in row_content_rdr:
-            if single_row[1] == 'http':
-                with open(csv_http_out, mode='w', newline='') as csv_http_file:
-                    http_writer = csv.writer(csv_http_file, delimiter=',')
-                    http_writer.writerow([single_row[0], single_row[1]])
-            elif single_row[1] == 'https':
-                with open(csv_https_out, mode='w', newline='') as csv_https_file:
-                    https_writer = csv.writer(csv_https_file, delimiter=',')
-                    https_writer.writerow([single_row[0], single_row[1]])
+        with open(csv_http_out, mode='w', newline='') as csv_http_file:
+            with open(csv_https_out, mode='w', newline='') as csv_https_file:
+                for single_row in row_content_rdr:
+                    if single_row[1] == 'http':
+                        http_writer = csv.writer(csv_http_file, delimiter=',')
+                        http_writer.writerow([single_row[0], single_row[1]])
+                    elif single_row[1] == 'https':
+                        https_writer = csv.writer(csv_https_file, delimiter=',')
+                        https_writer.writerow([single_row[0], single_row[1]])
 
 
 seperate_Http_Https()
