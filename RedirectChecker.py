@@ -15,13 +15,13 @@ class RedirectChecker(object):
         #self.logger.setLevel(logging.DEBUG)
         self.logger.setLevel(logging.WARNING)
 
-        self.CsvFilePath = 'top-50-Cleaned.csv' #'top-50-Cleaned.csv'    #'top-5.csv'
+        self.csvInputFilePath = 'top-50-Cleaned.csv' #'top-50-Cleaned.csv'    #'top-5.csv'
         self.all_domains = []
         self.csvOutputPath = 'Labeled-http-50.csv'
         self.all_row_data =[]
 
     def read_csv_file(self):
-        csv_filepath = self.CsvFilePath
+        csv_filepath = self.csvInputFilePath
         with open(csv_filepath, mode='r', newline='') as csvfile:
             domain_name_rdr = csv.reader(csvfile, delimiter=',')
             for row in domain_name_rdr:
