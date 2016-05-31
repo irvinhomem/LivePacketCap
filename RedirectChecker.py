@@ -15,7 +15,7 @@ class RedirectChecker(object):
         #self.logger.setLevel(logging.DEBUG)
         self.logger.setLevel(logging.WARNING)
 
-        self.CsvFilePath = 'top-5.csv' #'top-50-Cleaned.csv'
+        self.CsvFilePath = 'top-50-Cleaned.csv' #'top-50-Cleaned.csv'    #'top-5.csv'
         self.all_domains = []
         self.csvOutputPath = 'Labeled-http-50.csv'
         self.all_row_data =[]
@@ -80,8 +80,14 @@ class RedirectChecker(object):
             for row in self.all_row_data:
                 #writer.writerow([row.item])
                 self.logger.debug("Domain: [%s] | Proto: [%s] | Loc-Proto: [%s]" % (row[0], row[1], row[2]))
-                writer.writerow([row[0],row[1],row[2]])
-                #if row[1] == 'https' or row[2] == 'https':
+                #writer.writerow([row[0],row[1],row[2]])    # 3 rows with Domain, Initial-HTTP[S], Location HTTP[S]
+                if row[1] == 'https' or row[2] == 'https':  # 2 rows with Domain HTTP or HTTPS (Final location)
+                    writer.writerow([row[0], 'https'])
+                elif row[1] == 'Timeout' or row[2] == 'Timeout':
+                    writer.writerow([row[0], 'Timeout'])
+                else:
+                    writer.writerow([row[0], 'http'])
+
 
         shutil.move(tempfile.name, self.csvOutputPath)
 
