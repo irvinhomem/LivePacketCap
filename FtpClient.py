@@ -2,6 +2,7 @@
 import ftplib
 import csv
 import logging
+import os
 
 
 class FtpClient(object):
@@ -96,6 +97,31 @@ class FtpClient(object):
     def ftp_log_out(self):
         self.client.quit()
 
+    def ftp_upload_file(self, file_path):
+        file_name = file_path.split('/')[-1]
+        self.logger.debug("File being uploaded: %s" % file_path)
+        ext = os.path.splitext(file_path)[1]
+        if ext in (".txt", ".htm", ".html"):
+            self.client.storlines("STOR " + "/" + file_name, open(file_path))
+        else:
+            self.client.storbinary("STOR " + "/" + file_name, open(file_path, "rb"), 1024)
+
+        self.logger.debug("File upload SUCCESS: %s" % file_path)
+
+def downloadText(ftp, filename, outfile=None):
+    # fetch a text file
+    if outfile is None:
+        outfile = sys.stdout
+    # use a lambda to add newlines to the lines read from the server
+    ftp.retrlines("RETR " + filename, lambda s, w=outfile.write: w(s+"\n"))
+
+def downloadBinary(ftp, filename, outfile=None):
+    # fetch a binary file
+    if outfile is None:
+        outfile = sys.stdout
+    ftp.retrbinary("RETR " + filename, outfile.write)
+
+
 
 myFTPClient = FtpClient()
 myFTPClient.read_configs()
@@ -105,6 +131,8 @@ myFTPClient.login()
 myFTPClient.listCurrDir()
 myFTPClient.list_file_names()
 myFTPClient.list_directories()
+
+myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
 
 myFTPClient.ftp_log_out()
 
