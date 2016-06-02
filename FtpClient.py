@@ -118,9 +118,18 @@ class FtpClient(object):
 
     def downloadBinary(self, filename, outfile=None):
         # fetch a binary file
-        if outfile is None:
-            outfile = sys.stdout
-        self.retrbinary("RETR " + filename, outfile.write)
+        self.logger.debug("Starting file download ...")
+        # if outfile is None:
+        #     outfile = sys.stdout
+        # self.client.retrbinary("RETR " + "/" + filename, outfile.write)
+
+        self.client.retrbinary("RETR " + "/" + filename, open(filename, 'wb').write)
+
+        # fhandle = open(filename, 'wb')
+        # self.client.retrbinary("RETR " + '/' + filename, fhandle.write)
+        # fhandle.close()
+
+        self.logger.debug("File download SUCCESS ...")
 
 
 
@@ -134,6 +143,8 @@ myFTPClient.list_file_names()
 myFTPClient.list_directories()
 
 myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
+
+myFTPClient.downloadBinary("TPS Report.pdf")
 
 myFTPClient.ftp_log_out()
 
