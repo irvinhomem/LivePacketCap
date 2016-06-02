@@ -4,6 +4,7 @@ from tempfile import NamedTemporaryFile
 import shutil
 import logging
 
+
 class RedirectChecker(object):
 
     def __init__(self):
