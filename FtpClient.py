@@ -3,6 +3,7 @@ import ftplib
 import csv
 import logging
 import os
+import sys
 
 
 class FtpClient(object):
@@ -108,18 +109,18 @@ class FtpClient(object):
 
         self.logger.debug("File upload SUCCESS: %s" % file_path)
 
-def downloadText(ftp, filename, outfile=None):
-    # fetch a text file
-    if outfile is None:
-        outfile = sys.stdout
-    # use a lambda to add newlines to the lines read from the server
-    ftp.retrlines("RETR " + filename, lambda s, w=outfile.write: w(s+"\n"))
+    def downloadText(self, filename, outfile=None):
+        # fetch a text file
+        if outfile is None:
+            outfile = sys.stdout
+        # use a lambda to add newlines to the lines read from the server
+        self.client.retrlines("RETR " + filename, lambda s, w=outfile.write: w(s+"\n"))
 
-def downloadBinary(ftp, filename, outfile=None):
-    # fetch a binary file
-    if outfile is None:
-        outfile = sys.stdout
-    ftp.retrbinary("RETR " + filename, outfile.write)
+    def downloadBinary(self, filename, outfile=None):
+        # fetch a binary file
+        if outfile is None:
+            outfile = sys.stdout
+        self.retrbinary("RETR " + filename, outfile.write)
 
 
 
