@@ -4,6 +4,7 @@ import csv
 import logging
 import os
 import sys
+import random
 
 
 class FtpClient(object):
@@ -131,6 +132,41 @@ class FtpClient(object):
 
         self.logger.debug("File download SUCCESS ...")
 
+    # def absoluteFilePaths(self, directory):
+    #     for dirpath, _, filenames in os.walk(directory):
+    #         for f in filenames:
+    #             yield os.path.abspath(os.path.join(dirpath, f))
+
+    def change_to_Random_Dir(self):
+        self.logger.debug("Current DIR: %s" % self.client.pwd())
+        level1_dirs = []
+        for file_name in self.client.nlst():
+            try:
+                self.client.cwd('/' + file_name)
+                level1_dirs.append(file_name)
+                self.logger.debug("Directory [L-1]: %s" % file_name)
+            except ftplib.error_perm as detail:
+                self.logger.debug("It's probably not a directory [L-1]: %s : %s" % (file_name, detail))
+        self.logger.debug("Number of L1-Dirs: %i" % len(level1_dirs))
+
+        randomly_sampled_L1_dir = random.sample(level1_dirs, 1)[0]
+        self.client.cwd('/' + randomly_sampled_L1_dir)
+        self.logger.debug("Current Level-1 DIR selected: %s" % self.client.pwd())
+
+        level2_dirs = []
+        for file_name_l2 in self.client.nlst():
+            try:
+                self.client.cwd('/' + randomly_sampled_L1_dir + '/' +file_name_l2)
+                level2_dirs.append(file_name_l2)
+                self.logger.debug("Directory [L-2]: %s" % file_name_l2)
+            except ftplib.error_perm as detail:
+                self.logger.debug("It's probably not a directory [L-2]: %s : %s" % (file_name_l2, detail))
+        self.logger.debug("Number of L2-Dirs: %i" % len(level2_dirs))
+
+        rand_L2_dir = random.sample(level2_dirs, 1)[0]
+        self.client.cwd('/' + randomly_sampled_L1_dir + '/' + rand_L2_dir)
+        self.logger.debug("Current Level-2 DIR selected: %s" % self.client.pwd())
+
 
 
 myFTPClient = FtpClient()
@@ -140,11 +176,15 @@ myFTPClient.login()
 
 myFTPClient.listCurrDir()
 myFTPClient.list_file_names()
-myFTPClient.list_directories()
+#myFTPClient.list_directories()
 
 #myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
 
 #myFTPClient.downloadBinary("TPS Report.pdf")
+
+
+
+myFTPClient.change_to_Random_Dir()
 
 myFTPClient.ftp_log_out()
 
