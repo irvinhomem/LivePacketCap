@@ -101,6 +101,17 @@ class FtpClient(object):
     def ftp_log_out(self):
         self.client.quit()
 
+    def ftp_Create_Dirs(self):
+        level1_lbls = "abcde"
+        level2_lbls = "abc"
+        for char in level1_lbls:
+            self.client.mkd("Level_1" + char)
+            self.client.cwd("Level_1" + char)
+            for char2 in level2_lbls:
+                self.client.mkd("Level_2" + char2)
+            self.client.cwd('/')
+        self.logger.debug("Finished Creating directories")
+
     def ftp_upload_file(self, file_path):
         file_name = file_path.split('/')[-1]
         self.logger.debug("File being uploaded: %s" % file_path)
@@ -117,9 +128,15 @@ class FtpClient(object):
         self.logger.debug("File being uploaded: %s" % loc_file_path)
         ext = os.path.splitext(loc_file_path)[1]
         self.client.cwd(ftp_path)
+        #self.client.mkd('Test')
+        #self.client.cwd('Test')
+        #self.client.mkd('Test3')
+        #self.client.cwd('Test3')
+
         self.logger.debug("Current FTP Directory for Random UPLOAD: %s" % self.client.pwd())
 
-        ftp_stor_cmd = "STOR %s%s" % (ftp_path, file_name)
+        #ftp_stor_cmd = "STOR %s%s" % (ftp_path, file_name)
+        ftp_stor_cmd = "STOR %s" % (file_name)
         self.logger.debug("FTP upload command: %s" % ftp_stor_cmd )
         if ext in (".txt", ".htm", ".html"):
             #self.logger.debug("FTP upload command: STOR %s%s" % (ftp_path, file_name))
@@ -127,8 +144,6 @@ class FtpClient(object):
         else:
             #self.logger.debug("FTP upload binary command: STOR %s%s" % (ftp_path, file_name))
             #self.client.storbinary("STOR " + ftp_path + file_name, open(loc_file_path, "rb"), 1024)
-            #self.logger.debug("FTP upload binary command: STOR %s" % (file_name))
-            #self.logger.debug("FTP upload binary command: STOR " +ftp_path+ file_name)
             self.client.storbinary(ftp_stor_cmd, open(loc_file_path, "rb"), 1024)
 
         self.logger.debug("File upload SUCCESS: %s" % loc_file_path)
@@ -218,10 +233,14 @@ myFTPClient.login()
 
 myFTPClient.listCurrDir()
 myFTPClient.list_file_names()
+
+#myFTPClient.ftp_Create_Dirs()
+
 #myFTPClient.list_directories()
 
 #myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
-myFTPClient.ftp_upload_file_spec_loc("/Level_1a/Level_2a/", "Fake_Files/TPS Report.pdf")
+myFTPClient.ftp_upload_file_spec_loc("/Level_1a/Level_2a/", "Fake_Files/TPS_Report.pdf")
+#myFTPClient.ftp_upload_file_spec_loc("/Test/Test3/", "Fake_Files/TPS_Report.pdf")
 
 #myFTPClient.downloadBinary("TPS Report.pdf")
 
