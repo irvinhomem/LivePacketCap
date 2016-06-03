@@ -9,7 +9,7 @@ import sys
 import random
 
 
-class FtpClient(object):
+class FtpClientTest(object):
 
     def __init__(self):
         # Configure Logging
@@ -110,18 +110,18 @@ class FtpClient(object):
             for char2 in level2_lbls:
                 self.client.mkd("Level_2" + char2)
             self.client.cwd('/')
-        self.logger.debug("Finished Creating directories")
+        self.logger.info("Finished Creating directories")
 
     def ftp_upload_file(self, file_path):
         file_name = file_path.split('/')[-1]
-        self.logger.debug("File being uploaded: %s" % file_path)
+        self.logger.info("File being uploaded: %s" % file_path)
         ext = os.path.splitext(file_path)[1]
         if ext in (".txt", ".htm", ".html"):
             self.client.storlines("STOR " + "/" + file_name, open(file_path))
         else:
             self.client.storbinary("STOR " + "/" + file_name, open(file_path, "rb"), 1024)
 
-        self.logger.debug("File upload SUCCESS: %s" % file_path)
+        self.logger.info("File upload SUCCESS: %s" % file_path)
 
     def ftp_upload_file_spec_loc(self, ftp_path, loc_file_path):
         file_name = loc_file_path.split('/')[-1]
@@ -146,7 +146,7 @@ class FtpClient(object):
             #self.client.storbinary("STOR " + ftp_path + file_name, open(loc_file_path, "rb"), 1024)
             self.client.storbinary(ftp_stor_cmd, open(loc_file_path, "rb"), 1024)
 
-        self.logger.debug("File upload SUCCESS: %s" % loc_file_path)
+        self.logger.info("File upload SUCCESS: %s" % loc_file_path)
 
     def downloadText(self, filename, outfile=None):
         # fetch a text file
@@ -168,7 +168,7 @@ class FtpClient(object):
         # self.client.retrbinary("RETR " + '/' + filename, fhandle.write)
         # fhandle.close()
 
-        self.logger.debug("File download SUCCESS ...")
+        self.logger.info("File download SUCCESS ...")
 
     # def absoluteFilePaths(self, directory):
     #     for dirpath, _, filenames in os.walk(directory):
@@ -223,10 +223,18 @@ class FtpClient(object):
         self.logger.debug("Random path on FTP Server: %s" % random_upload_dir)
 
         self.ftp_upload_file_spec_loc(random_upload_dir, path_of_rand_file)
-        self.logger.debug("Successfullu uploaded: %s to [%s]" % (rand_file, random_upload_dir))
+        self.logger.info("Successfully uploaded: %s to [%s]" % (rand_file, random_upload_dir))
+
+    def download_from_random_dir(self):
+        #--> Get all directories (Level1 and Level2)
 
 
-myFTPClient = FtpClient()
+        #--> Select a directory, select a file
+
+        #--> Download the file to the downloads directory
+
+
+myFTPClient = FtpClientTest()
 myFTPClient.read_configs()
 myFTPClient.login()
 
@@ -239,7 +247,7 @@ myFTPClient.list_file_names()
 #myFTPClient.list_directories()
 
 #myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
-myFTPClient.ftp_upload_file_spec_loc("/Level_1a/Level_2a/", "Fake_Files/TPS_Report.pdf")
+#myFTPClient.ftp_upload_file_spec_loc("/Level_1a/Level_2a/", "Fake_Files/TPS_Report.pdf")
 #myFTPClient.ftp_upload_file_spec_loc("/Test/Test3/", "Fake_Files/TPS_Report.pdf")
 
 #myFTPClient.downloadBinary("TPS Report.pdf")
