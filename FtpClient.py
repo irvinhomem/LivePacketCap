@@ -90,10 +90,10 @@ class FtpClient(object):
     def list_directories(self):
         for file_name in self.client.nlst():
             try:
-                self.client.cwd(file_name)
+                self.client.cwd('/'+file_name)
                 print("Directory: %s" % file_name)
             except ftplib.error_perm as detail:
-                print("It's probably not a directory:", detail)
+                print("It's probably not a directory: %s : %s", (file_name, detail))
 
     def ftp_log_out(self):
         self.client.quit()
@@ -142,9 +142,9 @@ myFTPClient.listCurrDir()
 myFTPClient.list_file_names()
 myFTPClient.list_directories()
 
-myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
+#myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
 
-myFTPClient.downloadBinary("TPS Report.pdf")
+#myFTPClient.downloadBinary("TPS Report.pdf")
 
 myFTPClient.ftp_log_out()
 
