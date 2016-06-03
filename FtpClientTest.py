@@ -226,10 +226,12 @@ class FtpClientTest(object):
         self.logger.info("Successfully uploaded: %s to [%s]" % (rand_file, random_upload_dir))
 
     def download_from_random_dir(self):
-        #--> Get all directories (Level1 and Level2)
+        ###--> Get all directories (Level1 and Level2)
+        #--> Change to a Random Directory
+        random_dir = self.change_to_Random_Dir()
 
+        #--> Select a directory, list files and select a random file
 
-        #--> Select a directory, select a file
 
         #--> Download the file to the downloads directory
 
