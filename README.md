@@ -1,2 +1,3 @@
 # LivePacketCap
-Live capture of HTTP traffic using wget and pyshark
+Live capture of HTTP and FTP traffic through scripted random interaction
+
