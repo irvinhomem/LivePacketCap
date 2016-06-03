@@ -3,6 +3,8 @@ import ftplib
 import csv
 import logging
 import os
+# from os import listdir
+# from os.path import join
 import sys
 import random
 
@@ -110,6 +112,27 @@ class FtpClient(object):
 
         self.logger.debug("File upload SUCCESS: %s" % file_path)
 
+    def ftp_upload_file_spec_loc(self, ftp_path, loc_file_path):
+        file_name = loc_file_path.split('/')[-1]
+        self.logger.debug("File being uploaded: %s" % loc_file_path)
+        ext = os.path.splitext(loc_file_path)[1]
+        self.client.cwd(ftp_path)
+        self.logger.debug("Current FTP Directory for Random UPLOAD: %s" % self.client.pwd())
+
+        ftp_stor_cmd = "STOR %s%s" % (ftp_path, file_name)
+        self.logger.debug("FTP upload command: %s" % ftp_stor_cmd )
+        if ext in (".txt", ".htm", ".html"):
+            #self.logger.debug("FTP upload command: STOR %s%s" % (ftp_path, file_name))
+            self.client.storlines(ftp_stor_cmd, open(loc_file_path))
+        else:
+            #self.logger.debug("FTP upload binary command: STOR %s%s" % (ftp_path, file_name))
+            #self.client.storbinary("STOR " + ftp_path + file_name, open(loc_file_path, "rb"), 1024)
+            #self.logger.debug("FTP upload binary command: STOR %s" % (file_name))
+            #self.logger.debug("FTP upload binary command: STOR " +ftp_path+ file_name)
+            self.client.storbinary(ftp_stor_cmd, open(loc_file_path, "rb"), 1024)
+
+        self.logger.debug("File upload SUCCESS: %s" % loc_file_path)
+
     def downloadText(self, filename, outfile=None):
         # fetch a text file
         if outfile is None:
@@ -166,7 +189,26 @@ class FtpClient(object):
         rand_L2_dir = random.sample(level2_dirs, 1)[0]
         self.client.cwd('/' + randomly_sampled_L1_dir + '/' + rand_L2_dir)
         self.logger.debug("Current Level-2 DIR selected: %s" % self.client.pwd())
+        return self.client.pwd() + '/'
 
+    def upload_random_file_2_random_dir(self):
+        #--> Select Random File
+        # from os import listdir
+        # from os.path import isfile, join
+        mypath = os.getcwd() + '/Fake_Files/'
+        onlyfiles = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+        self.logger.debug("Number of FILES in directory: %i " % len(onlyfiles))
+
+        rand_file = random.sample(onlyfiles, 1)[0]
+        path_of_rand_file = mypath + rand_file
+        self.logger.debug("Local File to UPLOAD: %s" % path_of_rand_file)
+
+        #-->Select Random Location to upload to
+        random_upload_dir = self.change_to_Random_Dir()
+        self.logger.debug("Random path on FTP Server: %s" % random_upload_dir)
+
+        self.ftp_upload_file_spec_loc(random_upload_dir, path_of_rand_file)
+        self.logger.debug("Successfullu uploaded: %s to [%s]" % (rand_file, random_upload_dir))
 
 
 myFTPClient = FtpClient()
@@ -179,12 +221,13 @@ myFTPClient.list_file_names()
 #myFTPClient.list_directories()
 
 #myFTPClient.ftp_upload_file("Fake_Files/TPS Report.pdf")
+myFTPClient.ftp_upload_file_spec_loc("/Level_1a/Level_2a/", "Fake_Files/TPS Report.pdf")
 
 #myFTPClient.downloadBinary("TPS Report.pdf")
 
+#myFTPClient.change_to_Random_Dir()
 
-
-myFTPClient.change_to_Random_Dir()
+#myFTPClient.upload_random_file_2_random_dir()
 
 myFTPClient.ftp_log_out()
 
