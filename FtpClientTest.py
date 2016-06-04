@@ -179,9 +179,9 @@ class FtpClientTest(object):
         # self.client.retrbinary("RETR " + "/" + filename, outfile.write)
 
         #self.client.retrbinary("RETR " + "/" + filename, open(filename, 'wb').write)
-        self.client.cwd('/Level_1a/Level_2a/')
+        #self.client.cwd('/Level_1a/Level_2a/')
 
-        self.client.retrbinary("RETR " + filename, open(filename, 'wb').write)
+        self.client.retrbinary("RETR " + filename, open("Downloads/" +filename, 'wb').write)
 
         # fhandle = open(filename, 'wb')
         # self.client.retrbinary("RETR " + '/' + filename, fhandle.write)
