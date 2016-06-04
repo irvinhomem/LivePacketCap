@@ -84,7 +84,7 @@ class FtpClientTest(object):
         #     #self.logger.warn(exception.)
         #     raise
 
-    def list_file_names(self):
+    def list_files_and_dirs(self):
         #list = self.client.nlst()
         #print(list[0])
         for file_name in self.client.nlst():
@@ -97,6 +97,22 @@ class FtpClientTest(object):
                 print("Directory: %s" % file_name)
             except ftplib.error_perm as detail:
                 print("It's probably not a directory: %s : %s", (file_name, detail))
+
+    def list_only_files(self):
+        files = []
+
+        try:
+            files = self.client.nlst()
+        except ftplib.error_perm as err_resp:
+            if str(err_resp) == "550 No files found":
+                print("No files in this directory")
+            else:
+                raise
+        self.logger.debug("Num of FILES in DIR: %i" % len(files))
+        for f_name in files:
+            self.logger.debug("FILE: %s" % f_name)
+
+        return files
 
     def ftp_log_out(self):
         self.client.quit()
@@ -162,7 +178,10 @@ class FtpClientTest(object):
         #     outfile = sys.stdout
         # self.client.retrbinary("RETR " + "/" + filename, outfile.write)
 
-        self.client.retrbinary("RETR " + "/" + filename, open(filename, 'wb').write)
+        #self.client.retrbinary("RETR " + "/" + filename, open(filename, 'wb').write)
+        self.client.cwd('/Level_1a/Level_2a/')
+
+        self.client.retrbinary("RETR " + filename, open(filename, 'wb').write)
 
         # fhandle = open(filename, 'wb')
         # self.client.retrbinary("RETR " + '/' + filename, fhandle.write)
@@ -231,6 +250,19 @@ class FtpClientTest(object):
         random_dir = self.change_to_Random_Dir()
 
         #--> Select a directory, list files and select a random file
+        self.logger.debug("Current random DIR for DOWNLOAD: %s" % self.client.pwd())
+        #self.client.cwd(random_dir)
+
+        if len(self.list_only_files()) > 0:
+            if len(random.sample(self.list_only_files(), 1)) > 0:
+                selected_file = random.sample(self.list_only_files(), 1)[0]
+                self.logger.debug("Preparing to downlaod: %s" % selected_file)
+                self.downloadBinary(selected_file)
+                self.logger.debug("DOWNLOAD SUCCESS: %s " % selected_file)
+        else:
+            self.logger.debug("ZERO files in DIR to download !")
+
+
 
 
         #--> Download the file to the downloads directory
@@ -242,7 +274,7 @@ myFTPClient.login()
 
 
 myFTPClient.listCurrDir()
-myFTPClient.list_file_names()
+myFTPClient.list_files_and_dirs()
 
 #myFTPClient.ftp_Create_Dirs()
 
@@ -257,6 +289,8 @@ myFTPClient.list_file_names()
 #myFTPClient.change_to_Random_Dir()
 
 #myFTPClient.upload_random_file_2_random_dir()
+
+myFTPClient.download_from_random_dir()
 
 myFTPClient.ftp_log_out()
 
