@@ -339,6 +339,47 @@ class FtpClientTest(object):
         #self.procCapture.join()
         self.closeSniffer()
 
+    def run_Single_Cap_Multi_Upload_Random(self):
+        # --> Select Random Files from the "Fake Files" directory
+        # from os import listdir
+        # from os.path import isfile, join
+        mypath = os.getcwd() + '/Fake_Files/'
+        onlyfiles = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+        self.logger.debug("Number of FILES in directory: %i " % len(onlyfiles))
+
+        # Select 5 random files to upload
+        rand_file_list = random.sample(onlyfiles, 5)
+        self.logger.debug("Number of RANDOM FILES: %i" % len(rand_file_list))
+
+        # Select 5 random upload paths
+        random_dir_list = []
+        for i in range(5):
+            rand_dir = self.change_to_Random_Dir()
+            random_dir_list.append(rand_dir)
+            self.logger.debug("RANDOM DIR %i :----->>>> %s" % (i, rand_dir))
+            self.client.cwd('/')  # Change back to home for next round
+
+        self.logger.debug("Number of RANDOM DIRs: %i" % len(random_dir_list))
+
+        # path_of_rand_file = mypath + rand_file
+        # self.logger.debug("Local File to UPLOAD: %s" % path_of_rand_file)
+
+        # # -->Select Random Location to upload to
+        # random_upload_dir = self.change_to_Random_Dir()
+        # self.logger.debug("Random path on FTP Server: %s" % random_upload_dir)
+
+        for i, rand_ftp_path in enumerate(random_dir_list):
+            self.logger.debug("--------------------------------")
+            self.logger.debug("STARTING FTP UPLOAD: %i" % i)
+            self.logger.debug("--------------------------------")
+
+            self.ftp_upload_file_spec_loc(rand_ftp_path, rand_file_list[i])
+
+            self.logger.debug("--------------------------------")
+            self.logger.info("Successfully uploaded: %s to [%s]" % (rand_file_list[i], rand_ftp_path))
+            self.logger.debug("--------------------------------")
+
+
 
     def closeSniffer(self):
         self.cap.close()
