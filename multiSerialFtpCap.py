@@ -373,7 +373,12 @@ class FtpClientTest(object):
             self.logger.debug("STARTING FTP UPLOAD: %i" % i)
             self.logger.debug("--------------------------------")
 
-            self.ftp_upload_file_spec_loc(rand_ftp_path, rand_file_list[i])
+            self.logger.debug("Local File to UPLOAD: %s" % rand_file_list[i])
+            path_of_rand_file = mypath + rand_file_list[i]
+            self.logger.debug("Path of Local File to UPLOAD: %s" % path_of_rand_file)
+            self.logger.debug("Random path on FTP Server: %s" % rand_ftp_path)
+
+            self.ftp_upload_file_spec_loc(rand_ftp_path, path_of_rand_file)
 
             self.logger.debug("--------------------------------")
             self.logger.info("Successfully uploaded: %s to [%s]" % (rand_file_list[i], rand_ftp_path))
@@ -411,7 +416,9 @@ myFTPClient.listCurrDir()
 
 #myFTPClient.download_from_random_dir()
 
-myFTPClient.run_Single_Cap_Multi_DL_Random()
+#myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<=======
+
+myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<========
 
 myFTPClient.ftp_log_out()
 
