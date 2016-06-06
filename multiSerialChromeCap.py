@@ -13,10 +13,10 @@ import random
 
 import logging
 
-###################################################################
-#   Not yet wprking                                               #
-#   TODO: Enable looping through list of domains from CSV file    #
-###################################################################
+#########################################################################
+#   Not yet wprking                                                     #
+#   TODO: Enable looping through list of domains from CSV file : DOME   #
+#########################################################################
 
 class multiSerialChromeWebCap(object):
 
@@ -28,7 +28,7 @@ class multiSerialChromeWebCap(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        self.theCsvFilePath = 'top-5.csv'
+        self.theCsvFilePath = 'csv_files/top-5.csv'
         self.myNic = "eth0"
         self.cap = None
         self.procCapture = None
@@ -86,7 +86,8 @@ class multiSerialChromeWebCap(object):
         f_name_domains = self.createFileName()
 
         my_oFile = f_name_domains + "-" + datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
-        my_filePath = '/home/irvin/pcaps/' + f_name_domains + '/'
+        #my_filePath = '/home/irvin/pcaps/' + f_name_domains + '/'
+        my_filePath = '/home/irvin/pcaps/HTTP/'
 
         self.logger.info("Sniffing Interface : %s" % self.myNic)
         self.logger.info("Output File name : %s" % my_oFile)
