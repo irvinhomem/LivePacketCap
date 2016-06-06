@@ -9,6 +9,7 @@ import sys
 import random
 import errno
 from datetime import datetime
+import time
 
 import pyshark
 import multiprocessing as mp
@@ -38,6 +39,7 @@ class FtpClientTest(object):
 
         self.myNic = "eth0"
         self.cap = None
+        self.procCapture = None
         self.logger.info("Created FTP Client ...")
 
     def read_configs(self):
@@ -275,6 +277,74 @@ class FtpClientTest(object):
         self.logger.debug("Pyshark LiveCapture Object type: %s" % type(self.cap))
         #self.cap.sniff()
 
+    def run_Single_Cap_Multi_DL_Random(self):
+
+        #Populate list with 5 random Dirs to download from
+        random_dir_list = []
+        for i in range(5):
+            rand_dir = self.change_to_Random_Dir()
+            random_dir_list.append(rand_dir)
+            self.logger.debug("RANDOM DIR %i :----->>>> %s" %(i, rand_dir))
+            self.client.cwd('/')    #Change back to home for next round
+
+        self.logger.debug("Number of RANDOM DIRs: %i" % len(random_dir_list))
+
+        #####
+        # Ideally we can log out here and login later in order to also capture the login process
+        #self.ftp_log_out()
+        #####
+
+        #Set up Capture
+        self.setup_Capture()
+
+        self.procCapture = mp.Process(name='Capture_process/Sniffing service', target=self.cap.sniff)
+        self.procCapture.start()
+        self.logger.info("Capture Process is running: %s" % self.procCapture.is_alive())
+        self.logger.info("Capture Process ID: %i" % self.procCapture.pid)
+
+        self.logger.debug("Capture started...")
+        # Give it 3 seconds to set up the capture interface
+        time.sleep(3)
+
+        # #LOGIN HERE AGAIN***********
+        # self.login()
+
+        #Start off with the FTP root Directory
+        self.client.cwd('/')
+
+        # #LIST CURRENT DIRECTORY CONTENTS ********
+        # self.listCurrDir()
+
+        #Run random download from random dir 5 times
+        for random_dir in random_dir_list:
+            self.client.cwd(random_dir)
+            self.logger.debug("Current random DIR for DOWNLOAD: %s" % self.client.pwd())
+            if len(self.list_only_files()) > 0:
+                if len(random.sample(self.list_only_files(), 1)) > 0:
+                    self.logger.debug("******************************")
+                    self.logger.debug("Starting Random DL: %i" % i)
+                    self.logger.debug("******************************")
+                    selected_file = random.sample(self.list_only_files(), 1)[0]
+                    self.logger.debug("Preparing to download: %s" % selected_file)
+                    self.downloadBinary(selected_file)  # --> Download the file to the downloads directory
+                    self.logger.debug("DOWNLOAD SUCCESS: %s " % selected_file)
+                    self.logger.debug("******************************")
+                    self.logger.debug("COMPLETED Random DL: %i" % i)
+                    self.logger.debug("******************************")
+            else:
+                self.logger.debug("ZERO files in DIR to download !")
+
+        self.logger.debug("Completed RANDOM [Multi] DOWNLOADS")
+
+        #self.procCapture.join()
+        self.closeSniffer()
+
+
+    def closeSniffer(self):
+        self.cap.close()
+        print("Closed sniffer.")
+        self.procCapture.terminate()
+        print("... Ended Capture.")
 
 
 myFTPClient = FtpClientTest()
@@ -282,7 +352,7 @@ myFTPClient.read_configs()
 myFTPClient.login()
 
 myFTPClient.listCurrDir()
-myFTPClient.list_files_and_dirs()
+#myFTPClient.list_files_and_dirs()
 
 #myFTPClient.ftp_Create_Dirs()
 
@@ -298,7 +368,9 @@ myFTPClient.list_files_and_dirs()
 
 #myFTPClient.upload_random_file_2_random_dir()
 
-myFTPClient.download_from_random_dir()
+#myFTPClient.download_from_random_dir()
+
+myFTPClient.run_Single_Cap_Multi_DL_Random()
 
 myFTPClient.ftp_log_out()
 
