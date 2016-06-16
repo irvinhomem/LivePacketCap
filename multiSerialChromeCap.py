@@ -14,8 +14,12 @@ import random
 import logging
 
 #########################################################################
-#   Not yet wprking                                                     #
-#   TODO: Enable looping through list of domains from CSV file : DOME   #
+#    More or less working:                                              #
+#       - Remember to check the file paths of:
+#           - Where the domain names are being picked from              #
+#           - Where the pcap is going to be stored
+#       - Check that the correct Network interface is being used [IMPORTANT]
+#           - Otherwise tshark will fail
 #########################################################################
 
 class multiSerialChromeWebCap(object):
@@ -29,7 +33,7 @@ class multiSerialChromeWebCap(object):
         #self.logger.setLevel(logging.WARNING)
 
         self.theCsvFilePath = 'csv_files/top-5.csv'
-        self.myNic = "eth0"
+        self.myNic = "eno16777736"         #"eth0"
         self.cap = None
         self.procCapture = None
         self.web_process = None
@@ -87,7 +91,7 @@ class multiSerialChromeWebCap(object):
 
         my_oFile = f_name_domains + "-" + datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
         #my_filePath = '/home/irvin/pcaps/' + f_name_domains + '/'
-        my_filePath = '/home/irvin/pcaps/HTTP/'
+        my_filePath = '/home/student/pcaps/HTTP/'
 
         self.logger.info("Sniffing Interface : %s" % self.myNic)
         self.logger.info("Output File name : %s" % my_oFile)
