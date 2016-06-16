@@ -15,7 +15,6 @@ import pyshark
 import multiprocessing as mp
 import subprocess
 
-
 class FtpClientTest(object):
 
     def __init__(self):
