@@ -47,7 +47,10 @@ class multiSerialChromeWebCap(object):
         with open(csv_filepath, mode='r', newline='') as csvfile:
             domain_name_rdr = csv.reader(csvfile, delimiter=',')
             for row in domain_name_rdr:
-                self.all_domains.append(row[1])
+                #if row[2] == "dyn":    # For dynamic domains
+                if row[2] == "static":  # For static domains
+                    #self.all_domains.append(row[1])
+                    self.all_domains.append(row[0])
 
     def make_sure_path_exists(self, path):
         try:
