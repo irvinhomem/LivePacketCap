@@ -32,7 +32,8 @@ class multiSerialChromeWebCap(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        self.theCsvFilePath = 'csv_files/top-5.csv'
+        #self.theCsvFilePath = 'csv_files/top-5.csv'
+        self.theCsvFilePath = 'csv_files/only-http-50-dyn-stat.csv'
         self.myNic = "eno16777736"         #"eth0"
         self.cap = None
         self.procCapture = None
