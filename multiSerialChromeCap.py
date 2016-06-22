@@ -47,8 +47,8 @@ class multiSerialChromeWebCap(object):
         with open(csv_filepath, mode='r', newline='') as csvfile:
             domain_name_rdr = csv.reader(csvfile, delimiter=',')
             for row in domain_name_rdr:
-                #if row[2] == "dyn":    # For dynamic domains
-                if row[2] == "static":  # For static domains
+                if row[2] == "dyn":    # For dynamic domains
+                #if row[2] == "static":  # For static domains
                     #self.all_domains.append(row[1])
                     self.all_domains.append(row[0])
 
@@ -95,7 +95,8 @@ class multiSerialChromeWebCap(object):
 
         my_oFile = f_name_domains + "-" + datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
         #my_filePath = '/home/irvin/pcaps/' + f_name_domains + '/'
-        my_filePath = '/home/student/pcaps/HTTP/'
+        #my_filePath = '/home/student/pcaps/HTTP/'
+        my_filePath = '/home/student/pcaps/HTTPS/'
 
         self.logger.info("Sniffing Interface : %s" % self.myNic)
         self.logger.info("Output File name : %s" % my_oFile)
