@@ -20,7 +20,7 @@ class FtpClientTest(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        self.configs_path = './csv_files/ftp_creds.csv'
+        self.configs_path = './creds/ftp_creds.csv'
         self.configs_dict = {}
         self.server_ip = ''
         self.server_port = ''
