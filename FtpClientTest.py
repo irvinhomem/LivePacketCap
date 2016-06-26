@@ -290,7 +290,12 @@ myFTPClient.list_files_and_dirs()
 
 #myFTPClient.upload_random_file_2_random_dir()
 
-myFTPClient.download_from_random_dir()
+for count in range(5):
+    myFTPClient.logger.debug("Upload: %i", count)
+    myFTPClient.upload_random_file_2_random_dir()
+    myFTPClient.logger.debug("----------------------------")
+
+#myFTPClient.download_from_random_dir()
 
 myFTPClient.ftp_log_out()
 
