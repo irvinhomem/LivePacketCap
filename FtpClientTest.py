@@ -39,24 +39,24 @@ class FtpClientTest(object):
             self.logger.info("Opened config file ...")
             for row in domain_name_rdr:
                 if row[0] == 'ip':
-                    self.configs_dict['server_ip'] = row[1]
+                    self.configs_dict['server_ip'] = row[1].strip()
                     self.server_ip = row[1]
                 elif row[0] == 'port':
-                    self.configs_dict['server_port'] = row[1]
+                    self.configs_dict['server_port'] = row[1].strip()
                     self.server_port = row[1]
                 elif row[0] == 'user':
-                    self.configs_dict['user'] = row[1]
+                    self.configs_dict['user'] = row[1].strip()
                     self.user = row[1]
                 elif row[0] == 'pwd':
-                    self.configs_dict['pwd'] = row[1]
+                    self.configs_dict['pwd'] = row[1].strip()
                     self.pwd = row[1]
                 else:
                     self.logger.debug("Unknown config parameter found")
 
-        self.logger.debug("Server IP: %s" % (self.configs_dict['server_ip']))
-        self.logger.debug("Server Port: %s" % (self.configs_dict['server_port']))
-        self.logger.debug("User: %s" % (self.configs_dict['user']))
-        self.logger.debug("Pass: %s" % (self.configs_dict['pwd']))
+        self.logger.debug("Server IP: [%s]" % (self.configs_dict['server_ip']))
+        self.logger.debug("Server Port: [%s]" % (self.configs_dict['server_port']))
+        self.logger.debug("User: [%s]" % (self.configs_dict['user']))
+        self.logger.debug("Pass: [%s]" % (self.configs_dict['pwd']))
 
     def login(self):
         # ip = self.configs_dict['server_ip']
@@ -64,6 +64,8 @@ class FtpClientTest(object):
         # username = self.configs_dict['user']
         # pwd = self.configs_dict['pwd']
 
+        self.logger.debug("Server IP: %s", self.server_ip)
+        #self.client = ftplib.FTP(host=self.server_ip, user=self.user, passwd=self.pwd)
         self.client = ftplib.FTP(host=self.server_ip)       #FTP(host=ip, user=username, passwd=pwd)
         self.client.login(user=self.user, passwd=self.pwd)
         self.logger.debug("Welcome Message: %s" % self.client.getwelcome())
