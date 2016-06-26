@@ -243,6 +243,7 @@ class FtpClientTest(object):
 
         self.ftp_upload_file_spec_loc(random_upload_dir, path_of_rand_file)
         self.logger.info("Successfully uploaded: %s to [%s]" % (rand_file, random_upload_dir))
+        self.client.cwd('/')
 
     def download_from_random_dir(self):
         ###--> Get all directories (Level1 and Level2)
