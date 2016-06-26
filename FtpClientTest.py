@@ -34,22 +34,23 @@ class FtpClientTest(object):
     def read_configs(self):
         self.logger.info("Looking for config file ...")
         csv_filepath = self.configs_path
+        # Make sure to strip the spaces from the credentials being added from the file into the configs object and obj parameters
         with open(csv_filepath, mode='r', newline='') as csvfile:
             domain_name_rdr = csv.reader(csvfile, delimiter=',')
             self.logger.info("Opened config file ...")
             for row in domain_name_rdr:
                 if row[0] == 'ip':
                     self.configs_dict['server_ip'] = row[1].strip()
-                    self.server_ip = row[1]
+                    self.server_ip = row[1].strip()
                 elif row[0] == 'port':
                     self.configs_dict['server_port'] = row[1].strip()
-                    self.server_port = row[1]
+                    self.server_port = row[1].strip()
                 elif row[0] == 'user':
                     self.configs_dict['user'] = row[1].strip()
-                    self.user = row[1]
+                    self.user = row[1].strip()
                 elif row[0] == 'pwd':
                     self.configs_dict['pwd'] = row[1].strip()
-                    self.pwd = row[1]
+                    self.pwd = row[1].strip()
                 else:
                     self.logger.debug("Unknown config parameter found")
 
@@ -58,7 +59,7 @@ class FtpClientTest(object):
         self.logger.debug("User: [%s]" % (self.configs_dict['user']))
         self.logger.debug("Pass: [%s]" % (self.configs_dict['pwd']))
 
-    def login(self):
+    def setup_connection(self):
         # ip = self.configs_dict['server_ip']
         # port = self.configs_dict['server_port']
         # username = self.configs_dict['user']
@@ -273,7 +274,7 @@ class FtpClientTest(object):
 
 myFTPClient = FtpClientTest()
 myFTPClient.read_configs()
-myFTPClient.login()
+myFTPClient.setup_connection()
 
 
 myFTPClient.listCurrDir()
