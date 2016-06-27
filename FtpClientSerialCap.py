@@ -8,10 +8,6 @@ import os
 import sys
 import random
 
-######################################################################################
-##  Works for downloaiding and / or uploading random files  to random directories   ##
-##  TODO: Run packet capture mechanisms to capture network traffic.                 ##
-######################################################################################
 
 class FtpClientTest(object):
 
@@ -64,11 +60,6 @@ class FtpClientTest(object):
         self.logger.debug("Pass: [%s]" % (self.configs_dict['pwd']))
 
     def setup_connection(self):
-        # ip = self.configs_dict['server_ip']
-        # port = self.configs_dict['server_port']
-        # username = self.configs_dict['user']
-        # pwd = self.configs_dict['pwd']
-
         self.logger.debug("Server IP: %s", self.server_ip)
         #self.client = ftplib.FTP(host=self.server_ip, user=self.user, passwd=self.pwd)
         self.client = ftplib.FTP(host=self.server_ip)       #FTP(host=ip, user=username, passwd=pwd)
@@ -79,17 +70,6 @@ class FtpClientTest(object):
     def listCurrDir(self):
         self.logger.debug("Working Directory: %s" % self.client.pwd())
         self.client.dir()
-
-        # try:
-        #     #dir_objs = self.client.mlsd(path='/', facts=['type', 'size', 'perm'])
-        #     dir_objs = self.client.mlsd()
-        #     self.logger.debug("Directory List Type: %s" % dir_objs)
-        #
-        #     for f in dir_objs:
-        #         print(type(f[0]))
-        # except ftplib.all_errors as exception:
-        #     #self.logger.warn(exception.)
-        #     raise
 
     def list_files_and_dirs(self):
         #list = self.client.nlst()
@@ -270,8 +250,8 @@ class FtpClientTest(object):
         else:
             self.logger.debug("ZERO files in DIR to download !")
 
-
         #--> Download the file to the downloads directory
+
 
 
 myFTPClient = FtpClientTest()

@@ -49,17 +49,17 @@ class FtpClientTest(object):
             self.logger.info("Opened config file ...")
             for row in domain_name_rdr:
                 if row[0] == 'ip':
-                    self.configs_dict['server_ip'] = row[1]
-                    self.server_ip = row[1]
+                    self.configs_dict['server_ip'] = row[1].strip()
+                    self.server_ip = row[1].strip()
                 elif row[0] == 'port':
-                    self.configs_dict['server_port'] = row[1]
-                    self.server_port = row[1]
+                    self.configs_dict['server_port'] = row[1].strip()
+                    self.server_port = row[1].strip()
                 elif row[0] == 'user':
-                    self.configs_dict['user'] = row[1]
-                    self.user = row[1]
+                    self.configs_dict['user'] = row[1].strip()
+                    self.user = row[1].strip()
                 elif row[0] == 'pwd':
-                    self.configs_dict['pwd'] = row[1]
-                    self.pwd = row[1]
+                    self.configs_dict['pwd'] = row[1].strip()
+                    self.pwd = row[1].strip()
                 else:
                     self.logger.debug("Unknown config parameter found")
 
@@ -417,9 +417,9 @@ myFTPClient.listCurrDir()
 
 #myFTPClient.download_from_random_dir()
 
-myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<=======
+#myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<=======
 
-#myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<========
+myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<========
 
 myFTPClient.ftp_log_out()
 
