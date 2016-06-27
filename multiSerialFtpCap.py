@@ -14,6 +14,7 @@ import time
 import pyshark
 import multiprocessing as mp
 import subprocess
+import getpass
 
 class FtpClientTest(object):
 
@@ -258,7 +259,10 @@ class FtpClientTest(object):
             self.logger.debug("ZERO files in DIR to download !")
 
     def setup_Capture(self, ftp_type):
-        my_filePath = '/home/irvin/pcaps/FTP/'
+        self.logger.debug("Current User: %s", getpass.getuser())
+        curr_user = getpass.getuser()
+
+        my_filePath = '/home/'+curr_user+'/pcaps/FTP/'
         my_oFile = "FTP-" +ftp_type + "-" + datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
         self.cap = pyshark.LiveCapture(interface=self.myNic, output_file=my_filePath+my_oFile)
 
