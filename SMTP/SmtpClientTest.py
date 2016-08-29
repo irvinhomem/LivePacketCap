@@ -81,8 +81,25 @@ class SmtpClientTest(object):
         self.logger.debug("Creds list length: %i" % len(self.creds_list))
 
         # Select random row in list
-        chosen_row = random.choice(self.creds_list)
+        chosen_row = []
+        email_to_row = []
+        while(chosen_row == email_to_row):
+            self.logger.debug("In loop to chose random email addresses ...")
+            chosen_row = random.choice(self.creds_list)
+            self.logger.debug("Chosen: Real Name: %s | Email: %s | Pwd: %s |" % (chosen_row[0], chosen_row[1], chosen_row[2]))
+            email_to_row = random.choice(self.creds_list)
+            self.logger.debug("Chosen: Email To Name: %s | Email: %s | Pwd: %s |" % (email_to_row[0], email_to_row[1], email_to_row[2]))
+            if(chosen_row != email_to_row):
+                break
+
         self.logger.debug("Chosen: Real Name: %s | Email: %s | Pwd: %s |" % (chosen_row[0], chosen_row[1], chosen_row[2]))
+        self.logger.debug("Chosen: Email To Name: %s | Email: %s |" % (email_to_row[0], email_to_row[1]))
+
+        # return chosen_row, email_to_row
+        self.email_address_login = chosen_row[1]
+        self.email_pass = chosen_row[2]
+        self.email_FROM = chosen_row[0] + "<" + self.email_address_login + ">"
+        self.email_TO = email_to_row[0] + "<" + email_to_row[1] + ">"
 
 
     def connect_to_SMTP_serv(self):
@@ -96,9 +113,6 @@ class SmtpClientTest(object):
         self.msg = 'Hello world.'
 
     def send_single_email(self):
-        self.email_FROM = self.user_actual_name + "<"+ self.email_address_login + ">"
-        self.email_TO = self.email_TO
-
         self.server.sendmail(self.email_FROM, self.email_TO, self.msg)
         self.server.close()
 
@@ -109,4 +123,4 @@ smtpClient.get_emails_n_creds()
 
 smtpClient.connect_to_SMTP_serv()
 smtpClient.get_email_msg()
-#smtpClient.send_single_email()
+smtpClient.send_single_email()
