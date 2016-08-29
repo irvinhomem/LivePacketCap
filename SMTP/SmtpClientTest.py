@@ -2,6 +2,7 @@ import smtplib
 import logging
 import csv
 import os.path
+import random
 
 from email.mime.text import MIMEText
 
@@ -77,6 +78,12 @@ class SmtpClientTest(object):
                 self.logger.debug("| %s |" % (self.creds_list[i]))
                 self.logger.debug("| %s |" % (self.creds_list[i][0]))
                 #self.logger.debug("| %s | %s | %s |" % (self.creds_list[i][0], self.creds_list[i][1], self.creds_list[i][2]))
+        self.logger.debug("Creds list length: %i" % len(self.creds_list))
+
+        # Select random row in list
+        chosen_row = random.choice(self.creds_list)
+        self.logger.debug("Chosen: Real Name: %s | Email: %s | Pwd: %s |" % (chosen_row[0], chosen_row[1], chosen_row[2]))
+
 
     def connect_to_SMTP_serv(self):
         self.server = smtplib.SMTP(self.smtp_serv_fqdn, self.smtp_serv_port)  # port 465 or 587
