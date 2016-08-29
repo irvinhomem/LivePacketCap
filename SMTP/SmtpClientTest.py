@@ -103,10 +103,14 @@ class SmtpClientTest(object):
 
 
     def connect_to_SMTP_serv(self):
+        self.logger.debug("Connecting to SMTP fqdn ... %s : %s" % (self.smtp_serv_fqdn, self.smtp_serv_port))
         self.server = smtplib.SMTP(self.smtp_serv_fqdn, self.smtp_serv_port)  # port 465 or 587
+
         self.server.ehlo()
         self.server.starttls()
         self.server.ehlo()
+
+        self.logger.debug("USER LOGIN: %s || %s |" % (self.email_address_login, self.email_pass))
         self.server.login(self.email_address_login, self.email_pass)
 
     def get_email_msg(self):
