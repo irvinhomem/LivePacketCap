@@ -122,6 +122,9 @@ class Pop3ClientTest(object):
         self.logger.debug('-----------------------------------')
         self.logger.debug('Octets Size: %s' % octets_size)
 
+        # Close and Quit session
+        self.pop3MailboxServ.quit()
+
 
 pop3Mailbox = Pop3ClientTest()
 pop3Mailbox.read_configs()
