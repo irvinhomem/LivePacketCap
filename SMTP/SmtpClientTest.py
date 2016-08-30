@@ -125,20 +125,21 @@ class SmtpClientTest(object):
         # NO AUTHENTICATION DONE AT THE MOMENT
             # Not sure whether authentication is actually happening
             # PROBABLY/ POSSIBLY some configuration on the server is not working properly
+            #No ... the problem was in the creds file ... wrong password!!! Idiot!
 
-        # try:
-        #     self.server.ehlo()
-        #     self.server.starttls()
-        #     self.server.ehlo()
-        # except smtplib.SMTPException:
-        #     self.logger.debug("**************** Error doing EHLO")
-        #
-        # try:
-        #     self.logger.debug("USER LOGIN: |%s||%s|" % (self.email_address_login, self.email_pass))
-        #     #self.server.esmtp_features['auth'] = 'PLAIN LOGIN'  # To remove CRAM-MD5 authentication method causing errors
-        #     self.server.login(self.email_address_login, self.email_pass)
-        # except smtplib.SMTPException:
-        #     self.logger.debug("**************** Error logging into SMTP")
+        try:
+            self.server.ehlo()
+            self.server.starttls()
+            self.server.ehlo()
+        except smtplib.SMTPException:
+            self.logger.debug("**************** Error doing EHLO")
+
+        try:
+            self.logger.debug("USER LOGIN: |%s||%s|" % (self.email_address_login, self.email_pass))
+            #self.server.esmtp_features['auth'] = 'PLAIN LOGIN'  # To remove CRAM-MD5 authentication method causing errors
+            self.server.login(self.email_address_login, self.email_pass)
+        except smtplib.SMTPException:
+            self.logger.debug("**************** Error logging into SMTP")
 
     def get_email_msg(self):
         # Code adapted from python documentation
