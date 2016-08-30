@@ -122,11 +122,7 @@ class SmtpClientTest(object):
         except smtplib.SMTPException:
             self.logger.debug("************** Error connecting to SMTP")
 
-        # NO AUTHENTICATION DONE AT THE MOMENT
-            # Not sure whether authentication is actually happening
-            # PROBABLY/ POSSIBLY some configuration on the server is not working properly
-            #No ... the problem was in the creds file ... wrong password!!! Idiot!
-
+        #Authentication is now working, but the SMTP server is still permissive (allows unauthenticated requests :( )
         try:
             self.server.ehlo()
             self.server.starttls()
