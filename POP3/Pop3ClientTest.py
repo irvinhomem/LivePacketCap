@@ -93,13 +93,34 @@ class Pop3ClientTest(object):
         self.logger.debug('Login seems to be SUCCESSFUL.')
         self.logger.debug('-----------------------------------')
 
-        self.pop3MailboxServ.stat()
-        numMessages = self.pop3MailboxServ.list()
+    def pick_random_email(self):
+        numMessages, totalSize = self.pop3MailboxServ.stat()
+        #self.logger.debug('-----------------------------------')
+        self.logger.debug('Number of TOTAL messages: %s' % str(numMessages))
         self.logger.debug('-----------------------------------')
-        self.logger.debug('Number of NEW messages: %s' % str(numMessages))
+        numMsg, msg_id_list_octetsSize, not_sure = self.pop3MailboxServ.list()
+        #self.logger.debug('-----------------------------------')
+        self.logger.debug('Msg Count(#): %s | Msg id & size List: %s | Extra num: %s'
+                          % (numMsg, str(msg_id_list_octetsSize), not_sure))
         self.logger.debug('-----------------------------------')
 
-    #def pick_random_email():
+        selected_email = random.choice(msg_id_list_octetsSize)
+        #Decode bytes to string and split the string into 'id' and 'octets size' pieces
+        selected_email_id, email_octets_size = selected_email.decode().split(' ', 2)
+        self.logger.debug('Chosen Email: %s' % selected_email_id)
+        self.logger.debug('Chosen Email Size: %s' % email_octets_size)
+        self.logger.debug('-----------------------------------')
+
+        server_msg, body, octets_size = self.pop3MailboxServ.retr(selected_email_id)
+        self.logger.debug('Server Msg: %s' % server_msg)
+        #self.logger.debug('MSG Body: %s /n' % body)
+        self.logger.debug('-----------------------------------')
+        self.logger.debug('MSG Body:')
+        self.logger.debug('-----------------------------------')
+        for line in body:
+            self.logger.debug(line.decode())
+        self.logger.debug('-----------------------------------')
+        self.logger.debug('Octets Size: %s' % octets_size)
 
 
 pop3Mailbox = Pop3ClientTest()
@@ -108,3 +129,4 @@ pop3Mailbox.read_creds()
 
 pop3Mailbox.connect_to_Pop3_serv()
 pop3Mailbox.login_to_Mailbox()
+pop3Mailbox.pick_random_email()
