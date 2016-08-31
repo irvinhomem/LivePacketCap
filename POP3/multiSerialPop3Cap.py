@@ -157,11 +157,11 @@ class Pop3ClientMulti(object):
 
         # Get list of all emails with STAT and LIST commands
         # Only needs to be done once in our case, but tos simulate normal email interaction we put it in the loop
-#        all_emails = self.get_msg_size_id_list_STAT_LIST()
+        all_emails = self.get_msg_size_id_list_STAT_LIST()
 
         # Pick 3 random emails
         for counter in range(3):
-            all_emails = self.get_msg_size_id_list_STAT_LIST()
+            #all_emails = self.get_msg_size_id_list_STAT_LIST()
             self.logger.debug('---------------')
             self.logger.debug('Email: %i' % counter)
             self.logger.debug('---------------')
