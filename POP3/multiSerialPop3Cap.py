@@ -136,10 +136,10 @@ class Pop3ClientMulti(object):
         self.logger.debug('Chosen Email Size: %s' % email_octets_size)
         self.logger.debug('-----------------------------------')
 
-        # Do UIDL (No idea why, but it seems to appear in normal POP3 communication)
-        uidl_result = self.pop3MailboxServ.uidl(selected_email_id)
-        self.logger.debug('UIDL Result: %s' % str(uidl_result))
-        self.logger.debug('-----------------------------------')
+        # # Do UIDL (No idea why, but it seems to appear in normal POP3 communication)
+        # uidl_result = self.pop3MailboxServ.uidl(selected_email_id)
+        # self.logger.debug('UIDL Result: %s' % str(uidl_result))
+        # self.logger.debug('-----------------------------------')
 
         # Get the email contents
         server_msg, body, octets_size = self.pop3MailboxServ.retr(selected_email_id)
