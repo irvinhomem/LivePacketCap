@@ -159,6 +159,9 @@ class Pop3ClientMulti(object):
         # Only needs to be done once in our case, but tos simulate normal email interaction we put it in the loop
         all_emails = self.get_msg_size_id_list_STAT_LIST()
 
+        # Introduced single UIDL (without parameters) here to mimic normal seeming POP3 download traffic
+        self.pop3MailboxServ.uidl()
+
         # Pick 3 random emails
         for counter in range(3):
             #all_emails = self.get_msg_size_id_list_STAT_LIST()
