@@ -55,15 +55,20 @@ def pick_random_paragraph(para_starts_list):
     para_index = para_starts_list.index(selected_para_line_num)
     logger.debug('Paragraph index: %i' % para_index)
     next_para_num = para_starts_list[para_index+1]
+    logger.debug('Next Paragraph number: %i' % next_para_num)
 
     logger.debug('LINE %i: %s' % (selected_para_line_num, str(linecache.getline(text_file, selected_para_line_num))))
 
     my_paragraph = ''
-    for count in range(selected_para_line_num, next_para_num):
-        my_paragraph.join(linecache.getline(text_file,count))
+    for count in range(selected_para_line_num, next_para_num-1):
+        logger.debug('Counter: %i' % count)
+        logger.debug('LINE %i: %s' % (count, str(linecache.getline(text_file, count))))
+        my_paragraph = my_paragraph + (str(linecache.getline(text_file, count)))
 
     logger.debug('Paragraph:')
     logger.debug('--> %s' % my_paragraph)
+
+    return my_paragraph
 
 
 para_num_list = get_paragraph_line_number_starts(text_file)
