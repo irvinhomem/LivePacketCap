@@ -8,6 +8,8 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 
+from SMTP.pickRandomPara import PickRandomParagraph
+
 
 class SmtpClientTest(object):
 
@@ -148,7 +150,11 @@ class SmtpClientTest(object):
         msg['To'] = self.email_TO
         #msg['To'] = COMMASPACE.join(family)
         msg.preamble = 'Our family reunion'
-        the_message = "Random message text"
+
+        #the_message = "Random message text"
+        paragraph_picker = PickRandomParagraph()
+        the_message = paragraph_picker.get_random_paragraph_text()
+
         message_text = MIMEText(the_message,'plain')
         msg.attach(message_text)
 
