@@ -148,7 +148,8 @@ class SmtpClientTest(object):
         msg['To'] = self.email_TO
         #msg['To'] = COMMASPACE.join(family)
         msg.preamble = 'Our family reunion'
-        message_text = MIMEText('Message Text','plain')
+        the_message = "Random message text"
+        message_text = MIMEText(the_message,'plain')
         msg.attach(message_text)
 
         #self.msg = 'Hello world.'
