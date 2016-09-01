@@ -143,7 +143,6 @@ class SmtpClientTest(object):
         # Code adapted from python documentation
         # Create the container (outer) email message.
         msg = MIMEMultipart('Mixed')
-        msg['Subject'] = 'Test Message Subject'
         # me == the sender's email address
         # family = the list of all recipients' email addresses
         msg['From'] = self.email_FROM
@@ -153,7 +152,10 @@ class SmtpClientTest(object):
 
         #the_message = "Random message text"
         paragraph_picker = PickRandomParagraph()
-        the_message = paragraph_picker.get_random_paragraph_text()
+        the_message, the_subject = paragraph_picker.get_random_paragraph_text()
+
+        # Get the first 7 words in the first line and use them as the subject (Including the first Random Word:")
+        msg['Subject'] = ' '.join(the_subject.split(' ', 8)[:7])
 
         message_text = MIMEText(the_message,'plain')
         msg.attach(message_text)

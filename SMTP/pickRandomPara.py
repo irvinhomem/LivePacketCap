@@ -62,16 +62,24 @@ class PickRandomParagraph(object):
 
         self.logger.debug('LINE %i: %s' % (selected_para_line_num, str(linecache.getline(self.text_file, selected_para_line_num))))
 
+        word_list = ['Alice', 'Wonderland', 'Looking', 'Glass', 'Lewis', 'Carroll']
+        first_line = str(random.choice(word_list)) + ': '
         my_paragraph = 'Dear Sir/Madam, \n Text from "Alice in Wonderland" by Lewis Carroll: \n\n'
         for count in range(selected_para_line_num, next_para_num-1):
             self.logger.debug('Counter: %i' % count)
             self.logger.debug('LINE %i: %s' % (count, str(linecache.getline(self.text_file, count))))
+
+            # Get only first line
+            if count == selected_para_line_num:
+                first_line = first_line + str(linecache.getline(self.text_file, count))
+
+            # Combine lines
             my_paragraph = my_paragraph + (str(linecache.getline(self.text_file, count)))
 
             self.logger.debug('Paragraph:')
             self.logger.debug('--> %s' % my_paragraph)
 
-        return my_paragraph
+        return my_paragraph, first_line
 
     def get_random_paragraph_text(self):
         para_num_list = self.get_paragraph_line_number_starts(self.text_file)
