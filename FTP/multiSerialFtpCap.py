@@ -77,7 +77,7 @@ class FtpClientTest(object):
             if exception.errno != errno.EEXIST:
                 raise
 
-    def login(self):
+    def setup_connection(self):
         # ip = self.configs_dict['server_ip']
         # port = self.configs_dict['server_port']
         # username = self.configs_dict['user']
@@ -181,6 +181,7 @@ class FtpClientTest(object):
         # fetch a binary file
         self.logger.debug("Starting file download ...")
 
+        self.make_sure_path_exists("Downloads/")
         self.client.retrbinary("RETR " + filename, open("Downloads/" +filename, 'wb').write)
 
         self.logger.info("File download SUCCESS ...")
@@ -400,9 +401,10 @@ class FtpClientTest(object):
 
 myFTPClient = FtpClientTest()
 myFTPClient.read_configs()
-myFTPClient.login()
+myFTPClient.setup_connection()
 
 myFTPClient.listCurrDir()
+##--
 #myFTPClient.list_files_and_dirs()
 
 #myFTPClient.ftp_Create_Dirs()
@@ -421,9 +423,9 @@ myFTPClient.listCurrDir()
 
 #myFTPClient.download_from_random_dir()
 
-#myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<=======
+myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<=======
 
-myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<========
+#myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<========
 
 myFTPClient.ftp_log_out()
 
