@@ -37,6 +37,7 @@ class FtpClientTest(object):
 
         self.client = None
 
+        # Remember to change ethernet  adapter name !!!!
         self.myNic = "eth0"
         self.cap = None
         self.procCapture = None
