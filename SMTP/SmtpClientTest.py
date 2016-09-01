@@ -148,7 +148,7 @@ class SmtpClientTest(object):
         msg['From'] = self.email_FROM
         msg['To'] = self.email_TO
         #msg['To'] = COMMASPACE.join(family)
-        msg.preamble = 'Our family reunion'
+        msg.preamble = "Message PREAMBLE TEXT --> that doesn't appear within the body" #'Our family reunion'
 
         #the_message = "Random message text"
         paragraph_picker = PickRandomParagraph()
