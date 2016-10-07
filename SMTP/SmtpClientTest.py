@@ -161,7 +161,7 @@ class SmtpClientTest(object):
         message_text = MIMEText(the_message,'plain')
         msg.attach(message_text)
 
-        attachment_random_file_picker = PickRandomFile
+        attachment_random_file_picker = PickRandomFile()
         mime_formatted_file = attachment_random_file_picker.pick_random_file_and_make_mime()
         msg.attach(mime_formatted_file)
 
