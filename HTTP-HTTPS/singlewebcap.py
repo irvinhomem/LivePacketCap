@@ -9,13 +9,14 @@ import errno
 #import threading
 #subprocess.run python 3.5
 
-myNic = "eth0"
+myNic = "ens33"     # "eth0"
 procCapture = None
 web_process = None
 
+domain_name = "bing.com"
 #domain_name = "bbc.co.uk"
 #domain_name = "dsv.su.se"
-domain_name = "google.com"
+#domain_name = "google.com"
 #domain_name = "cataclysma.ml"
 #domain_name = "baidu.com"
 #domain_name = "craigslist.org"
@@ -35,7 +36,7 @@ def run_capture():
 
 #def run_wget(success):
 def run_wget():
-    print("Starting wget ...")
+    print("Starting web browser / wget ...")
     #web_process = subprocess.Popen(wget_cmd_params)
     web_process = subprocess.Popen(google_chrome_params)
 
@@ -78,8 +79,8 @@ def run_wget():
 # MAIN FUNCTION
 if __name__ == "__main__":
     domain_url = "http://" + domain_name
-    my_oFile = domain_name + "-" +datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
-    my_filePath = '/home/irvin/pcaps/' + domain_name + '/'
+    my_oFile = domain_name + "-" +datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"   # "-ovDNS.pcapng"
+    my_filePath = '/home/student/Desktop/pcaps2/' + domain_name + '/'
     wget_params = "-H -p -nv -e robots=off --no-dns-cache --delete-after http://" + domain_name
     #wget_cmd_params = ['wget','-H','-p', '-nv', '-q', '--show-progress', '-e', 'robots=off', '--no-dns-cache', '--delete-after', domain_url]
     wget_cmd_params = ['wget', '-H', '-p', '-nv', '-e', 'robots=off', '--no-dns-cache', '--delete-after', domain_url]
