@@ -9,6 +9,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 
 from SMTP.pickRandomPara import PickRandomParagraph
+from SMTP.pickRandomFile import PickRandomFile
 
 
 class SmtpClientTest(object):
@@ -159,6 +160,10 @@ class SmtpClientTest(object):
 
         message_text = MIMEText(the_message,'plain')
         msg.attach(message_text)
+
+        attachment_random_file_picker = PickRandomFile
+        mime_formatted_file = attachment_random_file_picker.pick_random_file_and_make_mime()
+        msg.attach(mime_formatted_file)
 
         #self.msg = 'Hello world.'
         self.msg = msg
