@@ -27,7 +27,13 @@ class FtpClientTest(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        self.configs_path = './creds/ftp_creds.csv'
+        configs_path = 'creds/ftp_creds.csv'
+        self.logger.debug("Current Working Dir Parent: %s" % os.path.realpath(os.path.join(os.getcwd(), os.pardir)))
+        parent_dir = os.path.realpath(os.path.join(os.getcwd(), os.pardir))
+        self.logger.debug("CWD Grand Parent: %s" % os.path.realpath(os.path.join(parent_dir, os.pardir)))
+        grandparent_dir = os.path.realpath(os.path.join(parent_dir, os.pardir))
+        self.configs_path = os.path.join(grandparent_dir, configs_path)
+
         self.configs_dict = {}
         self.server_ip = ''
         self.server_port = ''
@@ -38,7 +44,7 @@ class FtpClientTest(object):
         self.client = None
 
         # Remember to change ethernet  adapter name !!!!
-        self.myNic = "eth0"
+        self.myNic = 'ens33'   #"eth0"
         self.cap = None
         self.procCapture = None
         self.logger.info("Created FTP Client ...")
@@ -424,9 +430,9 @@ myFTPClient.listCurrDir()
 
 #myFTPClient.download_from_random_dir()
 
-myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<=======
+myFTPClient.run_Single_Cap_Multi_DL_Random()        # <<<<<======= DOWNLOAD
 
-#myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<========
+#myFTPClient.run_Single_Cap_Multi_Upload_Random()        # <<<<<======== UPLOAD
 
 myFTPClient.ftp_log_out()
 
