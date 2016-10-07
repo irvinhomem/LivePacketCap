@@ -46,7 +46,7 @@ class Pop3ClientMulti(object):
         self.pop3_user = ''
         self.pop3_pass = ''
 
-        self.myNic = 'eth0'
+        self.myNic = 'ens33'   #'eno16777736' # 'eth0'
 
     def read_configs(self):
         self.logger.info("Looking for config file ...")
@@ -188,7 +188,8 @@ class Pop3ClientMulti(object):
         self.logger.debug("Current User: %s", getpass.getuser())
         curr_user = getpass.getuser()
 
-        my_filePath = '/home/' + curr_user + '/pcaps/POP3/'
+        # my_filePath = '/home/' + curr_user + '/pcaps/POP3/'
+        my_filePath = '/home/' + curr_user + '/pcaps/POP3ovDNS/'
         my_oFile = "POP3-" + ftp_type + "-" + datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
         self.cap = pyshark.LiveCapture(interface=self.myNic, output_file=my_filePath + my_oFile)
 
