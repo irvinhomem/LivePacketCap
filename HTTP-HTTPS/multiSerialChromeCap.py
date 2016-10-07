@@ -32,10 +32,10 @@ class multiSerialChromeWebCap(object):
         self.logger.setLevel(logging.DEBUG)
         #self.logger.setLevel(logging.WARNING)
 
-        #self.theCsvFilePath = 'csv_files/top-5.csv'
-        #self.theCsvFilePath = 'csv_files/only-http-50-dyn-stat.csv'
-        self.theCsvFilePath = 'csv_files/only-httpssl-50-dyn-stat.csv'
-        self.myNic = "eno16777736"         #"eth0"
+        #self.theCsvFilePath = '../csv_files/top-5.csv'
+        #self.theCsvFilePath = '../csv_files/only-http-50-dyn-stat.csv'
+        self.theCsvFilePath = '../csv_files/only-httpssl-50-dyn-stat.csv'
+        self.myNic = 'ens33'     #"eno16777736"     #"eth0"
         self.cap = None
         self.procCapure = None
         self.web_process = None
@@ -96,10 +96,10 @@ class multiSerialChromeWebCap(object):
 
         my_oFile = f_name_domains + "-" + datetime.strftime(datetime.now(), "%Y-%m-%d-T%H%M%S") + ".pcapng"
         #my_filePath = '/home/irvin/pcaps/' + f_name_domains + '/'
-        #my_filePath = '/home/student/pcaps/HTTP/'
+        #my_filePath = '/home/student/pcaps/HTTPovDNS/'
         #my_filePath = '/home/student/pcaps/HTTP-Plain/'
-        #my_filePath = '/home/student/pcaps/HTTPS/'
-        my_filePath = '/home/student/pcaps/HTTPS-Plain/'
+        my_filePath = '/home/student/pcaps/HTTPSovDNS/'
+        #my_filePath = '/home/student/pcaps/HTTPS-Plain/'
 
         self.logger.info("Sniffing Interface : %s" % self.myNic)
         self.logger.info("Output File name : %s" % my_oFile)
